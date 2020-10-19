@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -18,6 +20,13 @@ public class Gameplay implements Screen {
     private GameMain game;
     private OrthographicCamera mainCamera;
     private Viewport gameViewport; // takes above camera and displays what we see
+
+    // for clouds
+    private OrthographicCamera box2dCamera;
+    private Box2DDebugRenderer box2DDebugRenderer;
+
+    private World world;
+
     private Sprite[] bgs;
     private float lastYPosition; // of the backgrounds
 
@@ -31,6 +40,9 @@ public class Gameplay implements Screen {
         // pass width, height, and camera (mainCamera)
         gameViewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT, mainCamera);
 
+        // box2d camera
+        box2dCamera = new OrthographicCamera();
+
         createBackgrounds();
     }
 
@@ -40,7 +52,7 @@ public class Gameplay implements Screen {
     }
 
     private void moveCamera() {
-        mainCamera.position.y -= 3;
+        mainCamera.position.y -= 1;
         System.out.println("Position: " + mainCamera.position.y);
     }
 

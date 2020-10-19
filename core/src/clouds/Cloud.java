@@ -49,4 +49,13 @@ public class Cloud extends Sprite {
         shape.dispose();
     }
 
+    public void setSpritePosition(float x, float y) {
+        setPosition(x, y);
+        createBody();
+    }
+
+    public String getCloudName() {
+        return this.cloudName;
+    }
+
 } // end Cloud class
