@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import javax.management.MBeanServerDelegateMBean;
 
 import clouds.Cloud;
+import clouds.CloudsController;
 import helpers.GameInfo;
 
 public class Gameplay implements Screen {
@@ -34,7 +35,9 @@ public class Gameplay implements Screen {
     private Sprite[] bgs;
     private float lastYPosition; // of the backgrounds
 
-    private Cloud c; // delete later
+    private CloudsController cloudsController;
+
+//    private Cloud c; // delete later
 
     public Gameplay(GameMain game) {
 
@@ -56,18 +59,20 @@ public class Gameplay implements Screen {
 
         world = new World(new Vector2(0, -9.8f), true); // world gravity
 
-        c = new Cloud(world, "Cloud 1");
-        c.setSpritePosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f);
-        createBackgrounds();
+//        c = new Cloud(world, "Cloud 1");
+//        c.setSpritePosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f);
+         cloudsController = new CloudsController(world);
+         createBackgrounds();
     }
 
     void update(float dt) {
-        // moveCamera();
+        moveCamera();
         checkBackgroundsOutOfBounds();
     }
 
     private void moveCamera() {
-        mainCamera.position.y -= 1;
+        mainCamera.position.y -= 1.5f;
+
         System.out.println("Position: " + mainCamera.position.y);
     }
 
@@ -117,8 +122,11 @@ public class Gameplay implements Screen {
         // rendering code
         game.getBatch().begin();
         drawBackgrounds();
-        game.getBatch().draw(c, c.getX() - c.getWidth() / 2f,
-                c.getY() - c.getHeight() / 2f);
+//        game.getBatch().draw(c, c.getX() - c.getWidth() / 2f,
+//                c.getY() - c.getHeight() / 2f);
+
+        cloudsController.drawClouds(game.getBatch());
+
         game.getBatch().end();
 
         debugRenderer.render(world, box2dCamera.combined);  // world, projection matrix
