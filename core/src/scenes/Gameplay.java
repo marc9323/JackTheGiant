@@ -68,6 +68,8 @@ public class Gameplay implements Screen {
     void update(float dt) {
         moveCamera();
         checkBackgroundsOutOfBounds();
+        cloudsController.setCameraY(mainCamera.position.y);
+        cloudsController.createAndArrangeNewClouds();
     }
 
     private void moveCamera() {
@@ -129,7 +131,7 @@ public class Gameplay implements Screen {
 
         game.getBatch().end();
 
-        debugRenderer.render(world, box2dCamera.combined);  // world, projection matrix
+        // debugRenderer.render(world, box2dCamera.combined);  // world, projection matrix
         game.getBatch().setProjectionMatrix(mainCamera.combined);
 
 
