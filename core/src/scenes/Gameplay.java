@@ -3,6 +3,7 @@ package scenes;
 import com.awesometuts.jackthegiant.GameMain;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,6 +20,7 @@ import javax.management.MBeanServerDelegateMBean;
 import clouds.Cloud;
 import clouds.CloudsController;
 import helpers.GameInfo;
+import player.Player;
 
 public class Gameplay implements Screen {
 
@@ -36,8 +38,8 @@ public class Gameplay implements Screen {
     private float lastYPosition; // of the backgrounds
 
     private CloudsController cloudsController;
+    private Player player;
 
-//    private Cloud c; // delete later
 
     public Gameplay(GameMain game) {
 
@@ -62,10 +64,20 @@ public class Gameplay implements Screen {
 //        c = new Cloud(world, "Cloud 1");
 //        c.setSpritePosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f);
          cloudsController = new CloudsController(world);
+         player = cloudsController.positionThePlayer(player);
          createBackgrounds();
     }
 
+    void handleInput(float dt) {
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            player.movePlayer(-2);
+        } else  if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            player.movePlayer(2);
+        }
+    }
+
     void update(float dt) {
+        handleInput(dt);
         moveCamera();
         checkBackgroundsOutOfBounds();
         cloudsController.setCameraY(mainCamera.position.y);
@@ -129,13 +141,18 @@ public class Gameplay implements Screen {
 
         cloudsController.drawClouds(game.getBatch());
 
+        player.drawPlayer(game.getBatch());
+
         game.getBatch().end();
 
-        // debugRenderer.render(world, box2dCamera.combined);  // world, projection matrix
+        debugRenderer.render(world, box2dCamera.combined);  // world, projection matrix
         game.getBatch().setProjectionMatrix(mainCamera.combined);
 
 
         mainCamera.update();
+
+        player.updatePlayer();
+        world.step(Gdx.graphics.getDeltaTime(), 6, 2); // higher the more precise box2d - performance hit
 
     }
 

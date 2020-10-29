@@ -15,6 +15,7 @@ public class Cloud extends Sprite {
     private World world;
     private Body body;
     private String cloudName;
+    private boolean drawLeft;
 
     public Cloud(World world, String cloudName) {
         super(new Texture("Clouds/" + cloudName + ".png"));
@@ -27,7 +28,7 @@ public class Cloud extends Sprite {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
 
-        bodyDef.position.set((getX() - 40) / GameInfo.PPM,
+        bodyDef.position.set((getX() - 45) / GameInfo.PPM,
                 getY() / GameInfo.PPM);
 
         // let the world create the body
@@ -36,8 +37,8 @@ public class Cloud extends Sprite {
         // do the shape
         PolygonShape shape = new PolygonShape();
         // size shape according to width of cloud
-        shape.setAsBox((getWidth() / 2 - 20) / GameInfo.PPM,
-                (getHeight() / 2) / GameInfo.PPM);
+        shape.setAsBox((getWidth() / 2 - 25) / GameInfo.PPM,
+                (getHeight() / 2 - 10) / GameInfo.PPM);
 
         // assign the shape to a fixture
         FixtureDef fixtureDef = new FixtureDef();
@@ -57,6 +58,14 @@ public class Cloud extends Sprite {
 
     public String getCloudName() {
         return this.cloudName;
+    }
+
+    public boolean getDrawLeft() {
+        return drawLeft;
+    }
+
+    public void setDrawLeft(boolean drawLeft) {
+        this.drawLeft = drawLeft;
     }
 
 } // end Cloud class

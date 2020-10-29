@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import helpers.GameInfo;
+import player.Player;
 
 public class CloudsController {
 
@@ -77,10 +78,12 @@ public class CloudsController {
                     // position cloud on the right side
                     tempX = randomBetweenNumbers(maxX - 40, maxX);
                     controlX = 1;
+                    c.setDrawLeft(false);
                 } else if(controlX == 1) {
                     // position left
                     tempX = randomBetweenNumbers(minX + 40, minX);
                     controlX = 0;
+                    c.setDrawLeft(true);
                 }
 
                 c.setSpritePosition(tempX, positionY);
@@ -95,8 +98,15 @@ public class CloudsController {
 
     public void drawClouds(SpriteBatch batch) {
         for(Cloud c : clouds) {
-            batch.draw(c, c.getX() - c.getWidth() / 2f,
-                    c.getY() - c .getHeight() / 2f);
+//            batch.draw(c, c.getX() - c.getWidth() / 2f,
+//                    c.getY() - c .getHeight() / 2f);
+            if(c.getDrawLeft()) {
+                batch.draw(c, c.getX() - c.getWidth() / 2f - 20,
+                        c.getY() - c .getHeight() / 2f);
+            } else {
+                batch.draw(c, c.getX() - c.getWidth() / 2f + 10,
+                        c.getY() - c .getHeight() / 2f);
+            }
         }
     }
 
@@ -118,6 +128,12 @@ public class CloudsController {
 
     public void setCameraY(float cameraY) {
         this.cameraY = cameraY;
+    }
+
+    public Player positionThePlayer(Player player) {
+        player = new Player(world, clouds.get(0).getX(),
+                clouds.get(0).getY() + 100);
+        return player;
     }
 
     private float randomBetweenNumbers(float min, float max) {
